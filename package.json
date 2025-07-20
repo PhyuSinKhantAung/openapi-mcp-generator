@@ -1,0 +1,17 @@
+{
+  "name": "mcp-server",
+  "version": "0.1.0",
+  "description": "A Model Context Protocol server example",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "mcp-server": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.15.0",
+    "build_io_api_v1": "^1.0.0"
+  }
+}
