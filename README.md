@@ -16,35 +16,31 @@ This tool converts any OpenAPI/Swagger specification into a ready-to-use MCP ser
 - ✅ **Ready-to-Run Servers**: Generated servers work immediately after npm install
 - ✅ **MCP Standard Compliance**: Uses official MCP SDK and follows best practices
 
-## Installation & Usage
+## Installation (Local Development)
 
-### Run directly with npx (no install required)
+Since this project is not published to the npm registry, you can install and use it locally with `npm link`:
 
-```bash
-npx openapi-mcp-generator --spec your-api.yaml --output ./my-server
-```
+```sh
+# Clone the repository (if you haven't already)
+git clone <your-repo-url>
+cd openapi-mcp-generator
 
-### Link locally for development
+# Install dependencies
+npm install
 
-In your project directory:
-
-```bash
+# Link the CLI globally
 npm link
 ```
 
-Then you can run:
-
-```bash
-openapi-mcp-generate --spec your-api.yaml --output ./my-server
-```
+This will make the `openapi-mcp-generator` command available globally on your system.
 
 ## Quick Start
 
 1. **Generate a server from your OpenAPI spec:**
 
 ```bash
-openapi-mcp-generate \
-  --spec path/to/your-api.yaml \
+openapi-mcp-generator \
+  -i path/to/your-api.yaml \
   --output ./my-generated-server \
   --server-name "My API MCP Server" \
   --auth-env-var "MY_API_TOKEN"
@@ -120,7 +116,6 @@ components:
 Usage: openapi-mcp-generate [options]
 
 Options:
-  --spec <file>         OpenAPI specification file (required)
   --output <dir>        Output directory (required)
   --server-name <name>  MCP server name (optional)
   --auth-env-var <var>  Environment variable for auth token (optional)
