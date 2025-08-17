@@ -1,17 +1,26 @@
 {
   "name": "mcp-server",
   "version": "0.1.0",
-  "description": "A Model Context Protocol server example",
+  "description": "A Model Context Protocol server example with OpenAPI generator",
   "private": true,
   "type": "module",
   "bin": {
-    "mcp-server": "./src/index.js"
+    "mcp-server": "./src/index.js",
+    "openapi-mcp-generate": "./bin/openapi-mcp-simple.js"
   },
   "files": [
-    "src"
+    "src",
+    "bin",
+    "templates",
+    "openapi-generator-config.yaml"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.15.0",
-    "build_io_api_v1": "^1.0.0"
+    "build_io_api_v1": "^1.0.0",
+    "zod": "^3.22.4",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.8.0"
   }
 }

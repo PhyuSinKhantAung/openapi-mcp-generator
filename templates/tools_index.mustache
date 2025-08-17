@@ -1,0 +1,13 @@
+{{#operations}}
+{{#operation}}
+import {{operationIdCamelCase}} from "./{{operationId}}.js";
+{{/operation}}
+{{/operations}}
+
+export default [
+{{#operations}}
+{{#operation}}
+  {{operationIdCamelCase}},
+{{/operation}}
+{{/operations}}
+];

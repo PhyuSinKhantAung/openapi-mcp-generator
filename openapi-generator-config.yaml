@@ -1,0 +1,29 @@
+generatorName: javascript
+library: javascript
+templateDir: templates
+files:
+  package.json:
+    templateFile: package.mustache
+    destinationFilename: package.json
+  src/index.js:
+    templateFile: index.mustache
+    destinationFilename: src/index.js
+  src/server.js:
+    templateFile: server.mustache
+    destinationFilename: src/server.js
+  src/utils/auth.js:
+    templateFile: auth.mustache
+    destinationFilename: src/utils/auth.js
+  src/utils/response.js:
+    templateFile: response.mustache
+    destinationFilename: src/utils/response.js
+  src/tools/index.js:
+    templateFile: tools_index.mustache
+    destinationFilename: src/tools/index.js
+supportingFiles:
+  - sourceFolder: templates
+    destinationFolder: src/tools
+    files:
+      - sourceFilename: api_operation.mustache
+        destinationFilename: "{{operationId}}.js"
+        templateData: "{{#operations}}{{#operation}}this{{/operation}}{{/operations}}"
