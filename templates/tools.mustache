@@ -1,0 +1,73 @@
+import { z } from "zod";
+import { formatResponse } from "../utils/response.js";
+{{#hasAuth}}
+import { getAuthHeaders } from "../utils/auth.js";
+{{/hasAuth}}
+
+export default {
+  name: "{{operationId}}",
+  schema: {
+    title: "{{summary}}",
+    description: "{{description}}",
+    {{#hasInput}}
+    inputSchema: {{inputSchema}},
+    {{/hasInput}}
+  },
+  handler: async ({{#hasInput}}input{{/hasInput}}) => {
+    try {
+      {{#hasAuth}}
+      const authHeaders = getAuthHeaders();
+      if (Object.keys(authHeaders).length === 0) {
+        return formatResponse({
+          type: "error",
+          message: "{{operationId}} failed: No authentication token provided (set {{authEnvVar}} environment variable)"
+        });
+      }
+      {{/hasAuth}}
+      {{#hasParams}}
+      const { {{#parameters}}{{name}}{{^last}}, {{/last}}{{/parameters}} } = input;
+      {{/hasParams}}
+      {{#hasBody}}
+      const requestBody = input.body || {};
+      {{/hasBody}}
+      
+      // TODO: Implement actual API call to {{method}} {{path}}
+      // Example using fetch:
+      // const response = await fetch(`${baseUrl}{{path}}`, {
+      //   method: '{{method}}',
+      {{#hasAuth}}
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     ...authHeaders
+      //   },
+      {{/hasAuth}}
+      {{#hasBody}}
+      //   body: JSON.stringify(requestBody)
+      {{/hasBody}}
+      // });
+      // const data = await response.json();
+      
+      return formatResponse({
+        message: "{{operationId}} executed successfully",
+        data: {
+          operation: "{{operationId}}",
+          method: "{{method}}",
+          path: "{{path}}",
+          {{#hasParams}}
+          parameters: { {{#parameters}}{{name}}{{^last}}, {{/last}}{{/parameters}} },
+          {{/hasParams}}
+          {{#hasBody}}
+          body: requestBody,
+          {{/hasBody}}
+          note: "This is a stub implementation. Add actual API call logic."
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      return formatResponse({
+        type: "error",
+        message: `{{operationId}} failed: ${error.message || JSON.stringify(error)}`
+      });
+    }
+  },
+};

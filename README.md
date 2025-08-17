@@ -1,172 +1,163 @@
-# MCP Server with OpenAPI Generator
+# OpenAPI to MCP Server Generator
 
-This repository contains a Model Context Protocol (MCP) server for the Build.io API, along with a powerful tool to generate MCP servers from any OpenAPI specification.
+Generate Model Context Protocol (MCP) servers from OpenAPI specifications automatically.
+
+## What is this?
+
+This tool converts any OpenAPI/Swagger specification into a ready-to-use MCP server. Each API endpoint becomes an MCP tool that can be used through natural language interactions with AI assistants.
 
 ## Features
 
-### 1. Build.io MCP Server
-A complete MCP server implementation for the Build.io API that demonstrates best practices for:
-- Tool registration and handler implementation
-- Authentication with Bearer tokens
-- Parameter validation using Zod
-- Standardized error handling and response formatting
+- ✅ **Universal OpenAPI Support**: Works with any OpenAPI 3.0+ specification
+- ✅ **Multiple Authentication Methods**: Bearer token, API key, Basic auth
+- ✅ **Parameter Validation**: Automatic Zod schema generation from OpenAPI schemas
+- ✅ **Request Body Handling**: Supports POST/PUT request bodies
+- ✅ **Error Handling**: Standardized error responses
+- ✅ **Ready-to-Run Servers**: Generated servers work immediately after npm install
+- ✅ **MCP Standard Compliance**: Uses official MCP SDK and follows best practices
 
-### 2. OpenAPI to MCP Generator 🚀
-A CLI tool that automatically generates MCP servers from OpenAPI/Swagger specifications.
+## Installation
 
 ```bash
-openapi-mcp-generate \
-  --spec your-api.yaml \
-  --output ./generated-server \
-  --server-name "Your API MCP Server" \
-  --auth-env-var "YOUR_API_TOKEN"
+npm install -g openapi-mcp-generator
 ```
 
-**Supports:**
-- ✅ Bearer token authentication
-- ✅ API key authentication (header/query)  
-- ✅ Basic authentication
-- ✅ Parameter validation with Zod
-- ✅ Request body handling
-- ✅ Auto-generated documentation
-- ✅ Ready-to-run server structure
+Or use directly:
+
+```bash
+npx openapi-mcp-generator --spec your-api.yaml --output ./my-server
+```
 
 ## Quick Start
 
-### Using the Build.io Server
+1. **Generate a server from your OpenAPI spec:**
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Run with your Build.io token:
-   ```bash
-   BUILD_IO_TOKEN=your_token npm start
-   ```
-
-### Generating a New MCP Server
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Generate a server from your OpenAPI spec:
-   ```bash
-   npx openapi-mcp-generate \
-     --spec path/to/your-api.yaml \
-     --output ./my-generated-server \
-     --server-name "My API MCP Server" \
-     --auth-env-var "MY_API_TOKEN"
-   ```
-
-3. Run your generated server:
-   ```bash
-   cd my-generated-server
-   npm install
-   MY_API_TOKEN=your_token npm start
-   ```
-
-## Tools Included
-
-### Build.io Server Tools
-- `whoAmI` - Get current user information
-- `getTeams` - List teams for current user
-- `createApp` - Create new apps
-- `buildRequest` - Trigger builds
-- `getApps`, `configVars`, `namespaces` - And many more!
-
-### Generated Server Tools
-Each API endpoint in your OpenAPI spec becomes an MCP tool with:
-- Automatic parameter validation
-- Authentication handling
-- Error handling
-- Documentation from API spec
-
-## Documentation
-
-- **[OpenAPI Generator Guide](./OPENAPI_GENERATOR.md)** - Complete guide to using the generator
-- **[Example APIs](./example-api.yaml)** - Sample OpenAPI specifications
-- **[Build.io Example](./build-io-example.yaml)** - Build.io-style API spec
-
-## Architecture
-
-The servers follow a consistent pattern:
-
-```
-src/
-├── index.js           # Main entry point
-├── server.js          # MCP server setup
-├── tools/             # Individual tool implementations
-│   ├── index.js       # Tool registry
-│   └── *.js           # One file per tool
-└── utils/
-    ├── auth.js        # Authentication logic
-    └── response.js    # Response formatting
+```bash
+openapi-mcp-generate \
+  --spec path/to/your-api.yaml \
+  --output ./my-generated-server \
+  --server-name "My API MCP Server" \
+  --auth-env-var "MY_API_TOKEN"
 ```
 
-Each tool exports:
-- `name`: Tool identifier
-- `schema`: Input validation schema
-- `handler`: Implementation function
+2. **Run the generated server:**
+
+```bash
+cd my-generated-server
+npm install
+MY_API_TOKEN=your_token npm start
+```
+
+3. **Connect to any MCP client** and start using your API through natural language!
+
+## Generated Server Structure
+
+```
+generated-server/
+├── package.json              # Dependencies and scripts
+├── src/
+│   ├── index.js              # Main entry point
+│   ├── server.js             # MCP server setup
+│   ├── tools/                # Individual tool implementations
+│   │   ├── index.js          # Tool registry
+│   │   └── *.js              # One file per API endpoint
+│   └── utils/
+│       ├── auth.js           # Authentication handling
+│       └── response.js       # Response formatting
+├── config/
+│   └── default.json          # Server configuration
+└── README.md                 # Setup and usage instructions
+```
+
+## Authentication Support
+
+The generator automatically detects and supports various authentication methods:
+
+### Bearer Token
+```yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+```
+
+### API Key
+```yaml
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+```
+
+### Basic Authentication
+```yaml
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+```
+
+## CLI Options
+
+```
+Usage: openapi-mcp-generate [options]
+
+Options:
+  --spec <file>         OpenAPI specification file (required)
+  --output <dir>        Output directory (required)  
+  --server-name <name>  MCP server name (optional)
+  --auth-env-var <var>  Environment variable for auth token (optional)
+  --help               Show this help message
+```
 
 ## Examples
 
-### Generated Server Structure
-```javascript
-// Generated tool example
-export default {
-  name: "getUsers",
-  schema: {
-    title: "Get Users",
-    description: "Retrieve a list of users",
-    inputSchema: {
-      limit: z.number().optional()
-    },
-  },
-  handler: async ({ limit }) => {
-    // Auto-generated authentication
-    const authConfig = getAuthConfig();
-    
-    // TODO: Implement API call
-    return formatResponse({
-      message: "Users retrieved successfully",
-      data: users
-    });
-  },
-};
-```
+This repository includes example OpenAPI specifications in the `examples/` directory:
 
-### Authentication Examples
-```javascript
-// Bearer Token
-export EXAMPLE_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+- `example-api.yaml` - Simple REST API with Bearer authentication
+- `build-spec.yaml` - Build.io-style API demonstrating complex operations
 
-// API Key  
-export BUILD_IO_TOKEN=your_api_key_here
+## Generated Tool Features
 
-// Basic Auth (uses USERNAME and PASSWORD)
-export API_USERNAME=user
-export API_PASSWORD=pass
-```
+Each API endpoint becomes an MCP tool with:
+
+- **Automatic Parameter Validation**: Uses Zod schemas based on OpenAPI parameter definitions
+- **Authentication Handling**: Automatically includes required authentication headers/parameters  
+- **Error Handling**: Standardized error responses
+- **Request Body Support**: Handles POST/PUT request bodies
+- **Documentation**: Includes descriptions from OpenAPI spec
+
+## Next Steps After Generation
+
+1. **Add HTTP client**: The generated tools contain TODO stubs. Add a library like `axios` or `node-fetch`
+2. **Implement API calls**: Replace the TODO comments with actual API requests
+3. **Test with real API**: Verify your generated server works with the actual API endpoints
+4. **Customize business logic**: Add any custom logic beyond basic CRUD operations
+5. **Deploy**: Deploy your server to make it accessible to MCP clients
+
+## Architecture
+
+The generator follows a modular architecture:
+
+- `lib/generator.js` - Main generator class that orchestrates the process
+- `lib/auth-parser.js` - Parses OpenAPI security schemes into auth configurations
+- `lib/template-processor.js` - Handles file generation using templates
+- `templates/` - Mustache templates for different file types
+- `config/` - OpenAPI Generator configuration files
 
 ## Contributing
 
-This repository demonstrates how to:
-1. Build production-ready MCP servers
-2. Handle authentication and validation
-3. Structure tools for maintainability
-4. Generate servers automatically from API specs
-
-Feel free to use the patterns and generator for your own APIs!
+Contributions are welcome! This tool demonstrates how to build production-ready MCP servers and can be extended to support additional OpenAPI features.
 
 ## Requirements
 
 - Node.js 18+
-- npm or yarn
-- Valid OpenAPI 3.0+ specification (for generator)
+- Valid OpenAPI 3.0+ specification
 
 ## License
 
-MIT License - feel free to use this code for your own MCP servers!
+MIT License - feel free to use this generator for your own API servers!

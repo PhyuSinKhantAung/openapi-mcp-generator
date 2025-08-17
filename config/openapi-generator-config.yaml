@@ -1,0 +1,27 @@
+generatorName: nodejs-mcp-server
+templateDir: ./templates
+outputDir: ./generated
+additionalProperties:
+  npmName: generated-mcp-server
+  npmVersion: 1.0.0
+  modelPropertyNaming: original
+  serverPort: 3000
+  serverHost: localhost
+  supportES6: true
+  npmRepository: https://registry.npmjs.org
+files:
+  package.json:
+    templateFile: package.mustache
+  src/server.js:
+    templateFile: server.mustache
+  src/utils/auth.js:
+    templateFile: auth.mustache
+  src/tools/tool.js:
+    templateFile: tools.mustache
+  src/index.js:
+    templateFile: index.mustache
+supportingFiles:
+  - templateFile: README.mustache
+    destinationFilename: README.md
+  - templateFile: gitignore.mustache
+    destinationFilename: .gitignore

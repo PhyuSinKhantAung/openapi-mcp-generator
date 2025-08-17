@@ -1,0 +1,77 @@
+{{#hasAuth}}
+{{#isBearerAuth}}
+export function getAuthConfig() {
+  const token = process.env.{{authEnvVar}};
+  if (!token) {
+    return null;
+  }
+  return {
+    type: 'bearer',
+    token: token
+  };
+}
+
+export function getAuthHeaders() {
+  const config = getAuthConfig();
+  if (!config) {
+    return {};
+  }
+  return {
+    'Authorization': `Bearer ${config.token}`
+  };
+}
+{{/isBearerAuth}}
+{{#isApiKeyAuth}}
+export function getAuthConfig() {
+  const token = process.env.{{authEnvVar}};
+  if (!token) {
+    return null;
+  }
+  return {
+    type: 'apiKey',
+    token: token
+  };
+}
+
+export function getAuthHeaders() {
+  const config = getAuthConfig();
+  if (!config) {
+    return {};
+  }
+  return {
+    '{{authHeaderName}}': config.token
+  };
+}
+{{/isApiKeyAuth}}
+{{#isOtherAuth}}
+export function getAuthConfig() {
+  const token = process.env.{{authEnvVar}};
+  if (!token) {
+    return null;
+  }
+  return {
+    type: 'token',
+    token: token
+  };
+}
+
+export function getAuthHeaders() {
+  const config = getAuthConfig();
+  if (!config) {
+    return {};
+  }
+  return {
+    'Authorization': config.token
+  };
+}
+{{/isOtherAuth}}
+{{/hasAuth}}
+{{^hasAuth}}
+export function getAuthConfig() {
+  return null;
+}
+
+export function getAuthHeaders() {
+  return {};
+}
+{{/hasAuth}}
