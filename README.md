@@ -16,25 +16,31 @@ This tool converts any OpenAPI/Swagger specification into a ready-to-use MCP ser
 - ✅ **Ready-to-Run Servers**: Generated servers work immediately after npm install
 - ✅ **MCP Standard Compliance**: Uses official MCP SDK and follows best practices
 
-## Installation
+## Installation (Local Development)
 
-```bash
-npm install -g openapi-mcp-generator
+Since this project is not published to the npm registry, you can install and use it locally with `npm link`:
+
+```sh
+# Clone the repository (if you haven't already)
+git clone <your-repo-url>
+cd openapi-mcp-generator
+
+# Install dependencies
+npm install
+
+# Link the CLI globally
+npm link
 ```
 
-Or use directly:
-
-```bash
-npx openapi-mcp-generator --spec your-api.yaml --output ./my-server
-```
+This will make the `openapi-mcp-generator` command available globally on your system.
 
 ## Quick Start
 
 1. **Generate a server from your OpenAPI spec:**
 
 ```bash
-openapi-mcp-generate \
-  --spec path/to/your-api.yaml \
+openapi-mcp-generator \
+  -i path/to/your-api.yaml \
   --output ./my-generated-server \
   --server-name "My API MCP Server" \
   --auth-env-var "MY_API_TOKEN"
@@ -74,6 +80,7 @@ generated-server/
 The generator automatically detects and supports various authentication methods:
 
 ### Bearer Token
+
 ```yaml
 components:
   securitySchemes:
@@ -83,6 +90,7 @@ components:
 ```
 
 ### API Key
+
 ```yaml
 components:
   securitySchemes:
@@ -93,6 +101,7 @@ components:
 ```
 
 ### Basic Authentication
+
 ```yaml
 components:
   securitySchemes:
@@ -107,8 +116,7 @@ components:
 Usage: openapi-mcp-generate [options]
 
 Options:
-  --spec <file>         OpenAPI specification file (required)
-  --output <dir>        Output directory (required)  
+  --output <dir>        Output directory (required)
   --server-name <name>  MCP server name (optional)
   --auth-env-var <var>  Environment variable for auth token (optional)
   --help               Show this help message
@@ -119,14 +127,13 @@ Options:
 This repository includes example OpenAPI specifications in the `examples/` directory:
 
 - `example-api.yaml` - Simple REST API with Bearer authentication
-- `build-spec.yaml` - Build.io-style API demonstrating complex operations
 
 ## Generated Tool Features
 
 Each API endpoint becomes an MCP tool with:
 
 - **Automatic Parameter Validation**: Uses Zod schemas based on OpenAPI parameter definitions
-- **Authentication Handling**: Automatically includes required authentication headers/parameters  
+- **Authentication Handling**: Automatically includes required authentication headers/parameters
 - **Error Handling**: Standardized error responses
 - **Request Body Support**: Handles POST/PUT request bodies
 - **Documentation**: Includes descriptions from OpenAPI spec

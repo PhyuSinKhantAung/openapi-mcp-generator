@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { OpenApiMcpGenerator } from '../lib/generator.js';
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+import { OpenApiMcpGenerator } from "../lib/generator.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,25 +29,25 @@ Example:
 
 function parseArgs(args) {
   const options = {};
-  
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    
+
     switch (arg) {
-      case '--spec':
+      case "--spec":
         options.spec = args[++i];
         break;
-      case '--output':
+      case "--output":
         options.output = args[++i];
         break;
-      case '--server-name':
+      case "--server-name":
         options.serverName = args[++i];
         break;
-      case '--auth-env-var':
+      case "--auth-env-var":
         options.authEnvVar = args[++i];
         break;
-      case '--help':
-      case '-h':
+      case "--help":
+      case "-h":
         options.help = true;
         break;
       default:
@@ -55,7 +55,7 @@ function parseArgs(args) {
         process.exit(1);
     }
   }
-  
+
   return options;
 }
 
@@ -64,15 +64,15 @@ function validateOptions(options) {
     printUsage();
     process.exit(0);
   }
-  
+
   if (!options.spec) {
-    console.error('Error: --spec is required');
+    console.error("Error: --spec is required");
     printUsage();
     process.exit(1);
   }
-  
+
   if (!options.output) {
-    console.error('Error: --output is required');
+    console.error("Error: --output is required");
     printUsage();
     process.exit(1);
   }
@@ -81,9 +81,9 @@ function validateOptions(options) {
 async function main() {
   const args = process.argv.slice(2);
   const options = parseArgs(args);
-  
+
   validateOptions(options);
-  
+
   try {
     const generator = new OpenApiMcpGenerator();
     await generator.generateServer(
@@ -91,7 +91,7 @@ async function main() {
       resolve(options.output),
       {
         serverName: options.serverName,
-        authEnvVar: options.authEnvVar
+        authEnvVar: options.authEnvVar,
       }
     );
   } catch (error) {
