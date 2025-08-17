@@ -16,16 +16,26 @@ This tool converts any OpenAPI/Swagger specification into a ready-to-use MCP ser
 - ✅ **Ready-to-Run Servers**: Generated servers work immediately after npm install
 - ✅ **MCP Standard Compliance**: Uses official MCP SDK and follows best practices
 
-## Installation
+## Installation & Usage
 
-```bash
-npm install -g openapi-mcp-generator
-```
-
-Or use directly:
+### Run directly with npx (no install required)
 
 ```bash
 npx openapi-mcp-generator --spec your-api.yaml --output ./my-server
+```
+
+### Link locally for development
+
+In your project directory:
+
+```bash
+npm link
+```
+
+Then you can run:
+
+```bash
+openapi-mcp-generate --spec your-api.yaml --output ./my-server
 ```
 
 ## Quick Start
