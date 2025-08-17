@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  title: Build.io API
+  description: Example Build.io-style API demonstrating different auth methods
+  version: 1.0.0
+servers:
+  - url: https://api.build.io/v1
+security:
+  - ApiKeyAuth: []
+paths:
+  /me:
+    get:
+      operationId: whoAmI
+      summary: Get Current User
+      description: Get current user information
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /teams:
+    get:
+      operationId: getTeams
+      summary: List Teams
+      description: Get list of teams for the current user
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+  /teams/{teamId}/apps:
+    get:
+      operationId: getApps
+      summary: List Apps
+      description: Get apps for a specific team
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/App'
+    post:
+      operationId: createApp
+      summary: Create App
+      description: Create a new app in the team
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAppRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/App'
+  /apps/{appId}/builds:
+    post:
+      operationId: triggerBuild
+      summary: Trigger Build
+      description: Trigger a new build for an app
+      parameters:
+        - name: appId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuildRequest'
+      responses:
+        '201':
+          description: Build triggered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Build'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    App:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        team_id:
+          type: string
+    CreateAppRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        region:
+          type: string
+    BuildRequest:
+      type: object
+      properties:
+        branch:
+          type: string
+        commitish:
+          type: string
+        description:
+          type: string
+    Build:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string

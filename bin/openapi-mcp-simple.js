@@ -148,6 +148,15 @@ function extractOperations(spec) {
                   description: propSchema.description || ''
                 });
               }
+            } else if (schema.$ref) {
+              // Handle schema references - for now just add a generic body parameter
+              parameters.push({
+                name: 'requestBody',
+                in: 'body',
+                required: operation.requestBody.required || false,
+                type: 'object',
+                description: 'Request body'
+              });
             }
           }
         }
@@ -345,13 +354,20 @@ export function getAuthHeaders() {
     // Generate parameter schema
     const paramSchema = [];
     const paramNames = [];
+    const bodyParams = [];
     for (const param of operation.parameters) {
       paramNames.push(param.name);
+      if (param.in === 'body') {
+        bodyParams.push(param.name);
+      }
+      
       let zodType = 'z.string()';
       if (param.type === 'number' || param.type === 'integer') {
         zodType = 'z.number()';
       } else if (param.type === 'boolean') {
         zodType = 'z.boolean()';
+      } else if (param.type === 'object') {
+        zodType = 'z.object({}).passthrough()';
       }
       
       if (!param.required) {
@@ -388,13 +404,19 @@ ${paramSchema.join(',\n')}
 
       // TODO: Implement actual API call to ${operation.method} ${operation.path}
       // You'll need to add an HTTP client library and implement the actual API calls
-      
+      ${bodyParams.length > 0 ? `
+      // Request body parameters: ${bodyParams.join(', ')}
+      const requestBody = {
+        ${bodyParams.map(p => `${p}: ${p}`).join(',\n        ')}
+      };
+      ` : ''}
       return formatResponse({
         message: "${operation.operationId} would be executed with parameters: ${paramNames.join(', ')}",
         data: { 
           method: "${operation.method}",
           path: "${operation.path}",
-          ${hasParams ? `parameters: { ${paramNames.join(', ')} }` : 'parameters: {}'}
+          ${hasParams ? `parameters: { ${paramNames.join(', ')} }` : 'parameters: {}'}${bodyParams.length > 0 ? `,
+          requestBody: requestBody` : ''}
         }
       });
     } catch (error) {
