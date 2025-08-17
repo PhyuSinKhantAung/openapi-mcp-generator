@@ -74,6 +74,7 @@ generated-server/
 The generator automatically detects and supports various authentication methods:
 
 ### Bearer Token
+
 ```yaml
 components:
   securitySchemes:
@@ -83,6 +84,7 @@ components:
 ```
 
 ### API Key
+
 ```yaml
 components:
   securitySchemes:
@@ -93,6 +95,7 @@ components:
 ```
 
 ### Basic Authentication
+
 ```yaml
 components:
   securitySchemes:
@@ -108,7 +111,7 @@ Usage: openapi-mcp-generate [options]
 
 Options:
   --spec <file>         OpenAPI specification file (required)
-  --output <dir>        Output directory (required)  
+  --output <dir>        Output directory (required)
   --server-name <name>  MCP server name (optional)
   --auth-env-var <var>  Environment variable for auth token (optional)
   --help               Show this help message
@@ -119,14 +122,13 @@ Options:
 This repository includes example OpenAPI specifications in the `examples/` directory:
 
 - `example-api.yaml` - Simple REST API with Bearer authentication
-- `build-spec.yaml` - Build.io-style API demonstrating complex operations
 
 ## Generated Tool Features
 
 Each API endpoint becomes an MCP tool with:
 
 - **Automatic Parameter Validation**: Uses Zod schemas based on OpenAPI parameter definitions
-- **Authentication Handling**: Automatically includes required authentication headers/parameters  
+- **Authentication Handling**: Automatically includes required authentication headers/parameters
 - **Error Handling**: Standardized error responses
 - **Request Body Support**: Handles POST/PUT request bodies
 - **Documentation**: Includes descriptions from OpenAPI spec
