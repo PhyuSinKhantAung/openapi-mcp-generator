@@ -1,0 +1,17 @@
+{
+  "name": "{{packageName}}",
+  "version": "1.0.0",
+  "description": "{{serverName}}",
+  "type": "module",
+  "bin": {
+    "{{packageName}}": "./src/index.js"
+  },
+  "files": ["src", "config"],
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.15.0",
+    "zod": "^3.22.4"
+  }
+}
