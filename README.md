@@ -40,7 +40,7 @@ This will make the `openapi-mcp-generator` command available globally on your sy
 
 ```bash
 openapi-mcp-generator \
-  -i path/to/your-api.yaml \
+  --spec path/to/your-api.yaml \
   --output ./my-generated-server \
   --server-name "My API MCP Server" \
   --auth-env-var "MY_API_TOKEN"
@@ -116,6 +116,7 @@ components:
 Usage: openapi-mcp-generate [options]
 
 Options:
+  --spec <config-file>  OpenAPI spec file (required)
   --output <dir>        Output directory (required)
   --server-name <name>  MCP server name (optional)
   --auth-env-var <var>  Environment variable for auth token (optional)
