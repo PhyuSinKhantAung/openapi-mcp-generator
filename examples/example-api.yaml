@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Example API
-  description: A simple example API for testing MCP server generation
+  title: Better Example API
+  description: A better example API for testing MCP server generation
   version: 1.0.0
 servers:
   - url: https://api.example.com/v1
@@ -21,15 +21,39 @@ paths:
           schema:
             type: integer
             default: 10
+        - name: offset
+          in: query
+          description: Number of users to skip
+          required: false
+          schema:
+            type: integer
+            default: 0
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: "#/components/schemas/User"
+    post:
+      operationId: createUser
+      summary: Create User
+      description: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
   /users/{id}:
     get:
       operationId: getUser
@@ -43,29 +67,71 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-    post:
-      operationId: createUser
-      summary: Create User
-      description: Create a new user
+                $ref: "#/components/schemas/User"
+    put:
+      operationId: updateUser
+      summary: Update User
+      description: Update an existing user
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUserRequest'
+              $ref: "#/components/schemas/UpdateUserRequest"
       responses:
-        '201':
-          description: Created
+        "200":
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
+    delete:
+      operationId: deleteUser
+      summary: Delete User
+      description: Delete a user
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+  /posts:
+    get:
+      operationId: getPosts
+      summary: Get Posts
+      description: Retrieve a list of posts
+      parameters:
+        - name: userId
+          in: query
+          description: Filter posts by user ID
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
 components:
   securitySchemes:
     bearerAuth:
@@ -82,6 +148,9 @@ components:
           type: string
         email:
           type: string
+        createdAt:
+          type: string
+          format: date-time
     CreateUserRequest:
       type: object
       required:
@@ -92,3 +161,24 @@ components:
           type: string
         email:
           type: string
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        userId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time

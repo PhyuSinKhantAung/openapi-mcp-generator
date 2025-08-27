@@ -4,7 +4,7 @@
   "description": "OpenAPI to MCP Server Generator - Generate MCP servers from OpenAPI specifications",
   "type": "module",
   "bin": {
-    "openapi-mcp-generate": "./bin/openapi-mcp-generate.js"
+    "openapi-mcp-generator": "./bin/openapi-mcp-generate.js"
   },
   "files": [
     "bin",
