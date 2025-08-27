@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: API Key Example API
+  description: An example API with API key authentication
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+security:
+  - apiKeyAuth: []
+paths:
+  /data:
+    get:
+      operationId: getData
+      summary: Get Data
+      description: Retrieve data with API key authentication
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
